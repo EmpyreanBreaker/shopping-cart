@@ -161,12 +161,19 @@ h1 {
   background: #fff;
 }
 
-.product-icon {
+.product-image {
   display: grid;
   place-items: center;
   height: 10rem;
-  background: #f0fdfa;
-  font-size: 4rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.product-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .product-details,
@@ -230,6 +237,15 @@ h1 {
 
 .add-button {
   width: 100%;
+}
+
+.retry-button {
+  border: 1px solid #0f766e;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #0f766e;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
 }
 
 .cart-list {

@@ -17,7 +17,9 @@ function ProductCard({ product, onAdd }) {
 
   return (
     <article className="product-card">
-      <div className="product-icon" aria-hidden="true">{product.icon}</div>
+      <div className="product-image">
+        <img src={product.thumbnail} alt={product.title} loading="lazy" />
+      </div>
       <div className="product-details">
         <h2>{product.title}</h2>
         <p>{product.description}</p>
