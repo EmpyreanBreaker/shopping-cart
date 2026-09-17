@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard.jsx'
 
+function isValidProduct(product) {
+  return product !== null
+    && typeof product === 'object'
+    && Number.isSafeInteger(product.id)
+    && product.id > 0
+    && typeof product.title === 'string'
+    && product.title.length > 0
+    && typeof product.description === 'string'
+    && Number.isFinite(product.price)
+    && product.price >= 0
+    && typeof product.thumbnail === 'string'
+    && (product.category === undefined || typeof product.category === 'string')
+}
+
 function Shop({ onAddToCart }) {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -19,7 +33,9 @@ function Shop({ onAddToCart }) {
         if (!response.ok) throw new Error(`Request failed: ${response.status}`)
 
         const data = await response.json()
-        if (!Array.isArray(data.products)) throw new Error('Invalid product data')
+        if (!Array.isArray(data?.products) || !data.products.every(isValidProduct)) {
+          throw new Error('Invalid product data')
+        }
 
         setProducts(data.products)
         setError('')

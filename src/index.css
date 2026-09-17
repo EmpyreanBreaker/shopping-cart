@@ -305,8 +305,11 @@ p {
 
 .product-image {
   display: grid;
+  flex: 0 0 13rem;
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
-  height: 13rem;
+  min-height: 0;
+  overflow: hidden;
   padding: 1.2rem;
   background: #f3f5ee;
 }
@@ -315,12 +318,15 @@ p {
   display: block;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
 
 .product-details {
   flex: 1;
+  min-width: 0;
   padding: 1.2rem 1.2rem 0;
 }
 
@@ -337,6 +343,7 @@ p {
   margin: 0 0 0.55rem;
   font-size: 1.3rem;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .product-details p:not(.product-category, .product-price) {

@@ -142,6 +142,39 @@ describe('shopping flow', () => {
     expect(cartLink).toHaveTextContent('1')
   })
 
+  it('does not add an empty, zero, or fractional quantity', async () => {
+    mockProducts()
+    const user = userEvent.setup()
+    render(<App />)
+    await openShop(user)
+
+    const mugCard = screen.getByRole('heading', { name: 'Ceramic Mug' }).closest('article')
+    const quantity = within(mugCard).getByRole('spinbutton', { name: 'Quantity' })
+    const addButton = within(mugCard).getByRole('button', { name: 'Add to Cart' })
+    const cartLink = within(screen.getByRole('navigation')).getByRole('link', { name: /Cart/ })
+
+    for (const invalidValue of ['', '0', '1.5']) {
+      await user.clear(quantity)
+      if (invalidValue) await user.type(quantity, invalidValue)
+      await user.click(addButton)
+      expect(cartLink).not.toHaveTextContent(/[0-9]/)
+    }
+  })
+
+  it('keeps cart contents when visiting another page', async () => {
+    mockProducts()
+    const user = userEvent.setup()
+    render(<App />)
+    await openShop(user)
+    const mugCard = screen.getByRole('heading', { name: 'Ceramic Mug' }).closest('article')
+    await user.click(within(mugCard).getByRole('button', { name: 'Add to Cart' }))
+
+    const navigation = screen.getByRole('navigation')
+    await user.click(within(navigation).getByRole('link', { name: 'Home' }))
+    await user.click(within(navigation).getByRole('link', { name: /Cart/ }))
+    expect(screen.getByText('Total: $9.99')).toBeInTheDocument()
+  })
+
   it('shows an error and retries when the product request fails', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce({ ok: false, status: 503 })
@@ -164,5 +197,26 @@ describe('shopping flow', () => {
     await user.click(screen.getByRole('link', { name: 'Explore the shop' }))
 
     expect(await screen.findByText('No products are available right now.')).toBeInTheDocument()
+  })
+
+  it('shows an error for a malformed product response', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ products: null }),
+    }))
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('link', { name: 'Explore the shop' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Products could not be loaded.')
+  })
+
+  it('does not crash when a product in the response is incomplete', async () => {
+    mockProducts([null])
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('link', { name: 'Explore the shop' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Products could not be loaded.')
   })
 })
