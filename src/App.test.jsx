@@ -134,6 +134,7 @@ describe('shopping flow', () => {
     expect(cartLink).toHaveTextContent('2')
     await user.click(cartLink)
     expect(screen.getByText('Total: $25.99')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Remove / }).map((button) => button.textContent.trim())).toEqual(['Remove', 'Remove'])
 
     await user.click(screen.getByRole('button', { name: 'Remove Ceramic Mug' }))
     expect(screen.queryByText('Ceramic Mug')).not.toBeInTheDocument()

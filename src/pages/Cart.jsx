@@ -32,8 +32,13 @@ function Cart({ items, onChangeQuantity, onRemove }) {
                 >+</button>
               </div>
               <span className="cart-item-total">${(product.price * quantity).toFixed(2)}</span>
-              <button type="button" className="remove-button" onClick={() => onRemove(product.id)}>
-                Remove {product.title}
+              <button
+                type="button"
+                className="remove-button"
+                aria-label={`Remove ${product.title}`}
+                onClick={() => onRemove(product.id)}
+              >
+                Remove
               </button>
             </li>
           ))}
