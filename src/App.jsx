@@ -27,6 +27,22 @@ function App() {
     })
   }
 
+  function changeCartQuantity(productId, change) {
+    setCart((currentCart) => {
+      const item = currentCart[productId]
+      if (!item) return currentCart
+
+      const quantity = item.quantity + change
+      const updatedCart = { ...currentCart }
+      if (quantity <= 0) {
+        delete updatedCart[productId]
+      } else {
+        updatedCart[productId] = { ...item, quantity }
+      }
+      return updatedCart
+    })
+  }
+
   return (
     <BrowserRouter>
       <Header cartCount={cartCount} />
@@ -34,7 +50,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop onAddToCart={addToCart} />} />
-          <Route path="/cart" element={<Cart items={Object.values(cart)} onRemove={removeFromCart} />} />
+          <Route path="/cart" element={
+            <Cart
+              items={Object.values(cart)}
+              onChangeQuantity={changeCartQuantity}
+              onRemove={removeFromCart}
+            />
+          } />
         </Routes>
       </main>
     </BrowserRouter>
