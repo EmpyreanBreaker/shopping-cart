@@ -21,6 +21,7 @@ function ProductCard({ product, onAdd }) {
         <img src={product.thumbnail} alt={product.title} loading="lazy" />
       </div>
       <div className="product-details">
+        {product.category && <p className="product-category">{product.category.replaceAll('-', ' ')}</p>}
         <h2>{product.title}</h2>
         <p>{product.description}</p>
         <p className="product-price">${product.price.toFixed(2)}</p>

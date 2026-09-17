@@ -1,9 +1,15 @@
+import { Link } from 'react-router-dom'
+
 function Cart({ items, onChangeQuantity, onRemove }) {
   return (
-    <section>
+    <section className="cart-page">
       <h1>Your cart</h1>
       {items.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="empty-cart">
+          <span aria-hidden="true">◌</span>
+          <p>Your cart is empty.</p>
+          <Link className="button-link" to="/shop">Browse the shop <span aria-hidden="true">↗</span></Link>
+        </div>
       ) : (
         <ul className="cart-list">
           {items.map(({ product, quantity }) => (
