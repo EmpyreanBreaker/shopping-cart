@@ -17,3 +17,11 @@ A React shopping cart project based on [The Odin Project assignment](https://www
 npm install
 npm run dev
 ```
+
+## Tests
+
+```bash
+npm test
+```
+
+The React Testing Library suite covers browsing products, cart quantity changes, and API loading outcomes.
