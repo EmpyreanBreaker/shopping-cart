@@ -25,3 +25,7 @@ npm test
 ```
 
 The React Testing Library suite covers browsing products, cart quantity changes, and API loading outcomes.
+
+## Deploy to Netlify
+
+Set the build command to `npm run build` and the publish directory to `dist`. The `public/_redirects` rule sends direct visits to `/shop` and `/cart` through the React app.
